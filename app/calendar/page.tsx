@@ -1,6 +1,6 @@
 // app/calendar/page.tsx
 import Header from '../components/Header.tsx';
-import Calendar from '../components/Calendar';
+import Calendar from '../components/Calendar.tsx';
 
 export default function CalendarPage() {
   const events = [
