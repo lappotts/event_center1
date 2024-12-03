@@ -1,19 +1,17 @@
-<<<<<<< HEAD
 "use client";
 
-=======
-// app/calendar/page.tsx
->>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
-import Header from '../components/Header';
-import Calendar from '../components/Calendar';
-import { useState, useEffect } from 'react';
+import Header from "../components/Header";
+import Calendar from "../components/Calendar";
+import { useState, useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/config/firebase.config";
 import { useAuth } from "@/context/AuthContext"; // Adjust the path if needed
 
 export default function CalendarPage() {
   const { user } = useAuth(); // Access the logged-in user
-  const [events, setEvents] = useState<{ title: string; date: string; start: string; end: string }[]>([]);
+  const [events, setEvents] = useState<
+    { title: string; date: string; start: string; end: string }[]
+  >([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -32,13 +30,13 @@ export default function CalendarPage() {
         );
         const eventsSnapshot = await getDocs(userEventsQuery);
 
-        const eventsData = eventsSnapshot.docs.map(doc => {
+        const eventsData = eventsSnapshot.docs.map((doc) => {
           const event = doc.data();
           return {
-            title: event.eventName || 'Untitled Event', 
+            title: event.eventName || "Untitled Event",
             date: event.date,
-            start: event.start || '00:00', 
-            end: event.end || '23:59',
+            start: event.start || "00:00",
+            end: event.end || "23:59",
           };
         });
 
