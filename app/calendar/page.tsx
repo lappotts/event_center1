@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 "use client";
 
+=======
+// app/calendar/page.tsx
+>>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
 import Header from '../components/Header';
 import Calendar from '../components/Calendar';
 import { useState, useEffect } from 'react';

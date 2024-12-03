@@ -20,14 +20,21 @@ export default function ScheduleEvent() {
     roomNumber: "",
   });
 
+<<<<<<< HEAD
   const router = useRouter();
 
+=======
+>>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
   const today = new Date();
   const minDate = new Date(today);
   minDate.setDate(today.getDate() + 2); // Two days ahead
 
   const formatDate = (date: Date) => {
+<<<<<<< HEAD
     return date.toISOString().split("T")[0];
+=======
+    return date.toISOString().split('T')[0];
+>>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
   };
 
   const handleInputChange = (
@@ -36,7 +43,11 @@ export default function ScheduleEvent() {
     const { name, value } = e.target;
 
     // Validate room number to only accept positive integers
+<<<<<<< HEAD
     if (name === "roomNumber" && value !== "") {
+=======
+    if (name === 'roomNumber' && value !== '') {
+>>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
       const isValid = /^\d+$/.test(value);
       if (!isValid) return; // Ignore invalid input
     }
@@ -49,6 +60,7 @@ export default function ScheduleEvent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+<<<<<<< HEAD
 
     if (!user || !user.uid) {
       console.error("User not logged in");
@@ -75,6 +87,10 @@ export default function ScheduleEvent() {
     } catch (error) {
       console.error("Error scheduling event:", error);
     }
+=======
+    console.log('Event Scheduled:', formData);
+    // Add form submission logic here
+>>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
   };
 
   return (
@@ -110,6 +126,7 @@ export default function ScheduleEvent() {
               required
               min={formatDate(minDate)} // Restrict minimum date
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              min={formatDate(minDate)} // Restrict minimum date
             />
           </div>
           <div>
@@ -127,9 +144,13 @@ export default function ScheduleEvent() {
             />
           </div>
           <div>
+<<<<<<< HEAD
             <label htmlFor="buildingName" className="block text-lg font-medium">
               Building Name
             </label>
+=======
+            <label htmlFor="buildingName" className="block text-lg font-medium">Building Name</label>
+>>>>>>> eeaefa06f6fe689e5f486537a4347f285b9c32a1
             <select
               id="buildingName"
               name="buildingName"
