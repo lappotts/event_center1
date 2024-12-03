@@ -8,6 +8,8 @@ import { db } from "@/config/firebase.config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter, useSearchParams } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default function UpdateEvent() {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
@@ -22,13 +24,17 @@ export default function UpdateEvent() {
   const searchParams = useSearchParams(); // Get search parameters
   const eventId = searchParams.get("eventId"); // Extract eventId from URL
 
+  if (!eventId) {
+    return (
+      <div className="container mx-auto p-8">
+        <h1 className="text-3xl font-bold mb-4">No Event Found</h1>
+        <p>Ensure the event ID is passed in the URL.</p>
+      </div>
+    );
+  }
+
   useEffect(() => {
     const fetchEventDetails = async () => {
-      if (!eventId) {
-        console.error("No eventId provided");
-        return;
-      }
-
       try {
         const eventRef = doc(db, "events", eventId);
         const eventSnapshot = await getDoc(eventRef);
@@ -43,19 +49,7 @@ export default function UpdateEvent() {
             roomNumber: string;
           };
 
-          // Optional validation for event data
-          if (
-            eventData.eventName &&
-            eventData.date &&
-            eventData.start &&
-            eventData.details &&
-            eventData.buildingName &&
-            eventData.roomNumber
-          ) {
-            setFormData(eventData);
-          } else {
-            console.error("Event data is missing required fields");
-          }
+          setFormData(eventData);
         } else {
           console.error("Event does not exist");
         }
@@ -80,11 +74,6 @@ export default function UpdateEvent() {
 
     if (!user || !user.uid) {
       console.error("User not logged in");
-      return;
-    }
-
-    if (!eventId) {
-      console.error("No eventId provided for update");
       return;
     }
 
