@@ -43,7 +43,7 @@ export default function UpdateEvent() {
             roomNumber: string;
           };
 
-          // Optional validation
+          // Optional validation for event data
           if (
             eventData.eventName &&
             eventData.date &&
@@ -83,8 +83,13 @@ export default function UpdateEvent() {
       return;
     }
 
+    if (!eventId) {
+      console.error("No eventId provided for update");
+      return;
+    }
+
     try {
-      const eventRef = doc(db, "events", eventId);
+      const eventRef = doc(db, "events", eventId); // Ensure doc() arguments are correct
       await updateDoc(eventRef, {
         ...formData,
         isApproved: false,
