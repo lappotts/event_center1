@@ -23,7 +23,6 @@ export default function UpdateEvent() {
   const eventId = searchParams.get("eventId"); // Extract eventId from URL
 
   useEffect(() => {
-    // Fetch the event details when the page loads
     const fetchEventDetails = async () => {
       if (!eventId) {
         console.error("No eventId provided");
@@ -35,7 +34,28 @@ export default function UpdateEvent() {
         const eventSnapshot = await getDoc(eventRef);
 
         if (eventSnapshot.exists()) {
-          setFormData(eventSnapshot.data());
+          const eventData = eventSnapshot.data() as {
+            eventName: string;
+            date: string;
+            start: string;
+            details: string;
+            buildingName: string;
+            roomNumber: string;
+          };
+
+          // Optional validation
+          if (
+            eventData.eventName &&
+            eventData.date &&
+            eventData.start &&
+            eventData.details &&
+            eventData.buildingName &&
+            eventData.roomNumber
+          ) {
+            setFormData(eventData);
+          } else {
+            console.error("Event data is missing required fields");
+          }
         } else {
           console.error("Event does not exist");
         }
@@ -85,7 +105,9 @@ export default function UpdateEvent() {
         <h1 className="text-3xl font-bold mb-4">Update Event</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="eventName" className="block text-lg font-medium">Event Name</label>
+            <label htmlFor="eventName" className="block text-lg font-medium">
+              Event Name
+            </label>
             <input
               type="text"
               id="eventName"
@@ -97,7 +119,9 @@ export default function UpdateEvent() {
             />
           </div>
           <div>
-            <label htmlFor="date" className="block text-lg font-medium">Date</label>
+            <label htmlFor="date" className="block text-lg font-medium">
+              Date
+            </label>
             <input
               type="date"
               id="date"
@@ -105,12 +129,16 @@ export default function UpdateEvent() {
               value={formData.date}
               onChange={handleInputChange}
               required
-              min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]} // Sets min to tomorrow's date
+              min={new Date(new Date().setDate(new Date().getDate() + 1))
+                .toISOString()
+                .split("T")[0]} // Sets min to tomorrow's date
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
           <div>
-            <label htmlFor="time" className="block text-lg font-medium">Time</label>
+            <label htmlFor="time" className="block text-lg font-medium">
+              Time
+            </label>
             <input
               type="time"
               id="start"
@@ -122,7 +150,9 @@ export default function UpdateEvent() {
             />
           </div>
           <div>
-            <label htmlFor="buildingName" className="block text-lg font-medium">Building Name</label>
+            <label htmlFor="buildingName" className="block text-lg font-medium">
+              Building Name
+            </label>
             <input
               type="text"
               id="buildingName"
@@ -134,7 +164,9 @@ export default function UpdateEvent() {
             />
           </div>
           <div>
-            <label htmlFor="roomNumber" className="block text-lg font-medium">Room Number</label>
+            <label htmlFor="roomNumber" className="block text-lg font-medium">
+              Room Number
+            </label>
             <input
               type="text"
               id="roomNumber"
@@ -146,7 +178,9 @@ export default function UpdateEvent() {
             />
           </div>
           <div>
-            <label htmlFor="details" className="block text-lg font-medium">Event Details</label>
+            <label htmlFor="details" className="block text-lg font-medium">
+              Event Details
+            </label>
             <textarea
               id="details"
               name="details"
@@ -167,3 +201,4 @@ export default function UpdateEvent() {
     </>
   );
 }
+
