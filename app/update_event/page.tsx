@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useAuth } from "@/context/AuthContext"; // Adjust path as needed
@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default function UpdateEvent() {
+function UpdateEventForm() {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     eventName: "",
@@ -93,106 +93,112 @@ export default function UpdateEvent() {
   };
 
   return (
-    <>
-      <Header />
-      <div className="container mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-4">Update Event</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="eventName" className="block text-lg font-medium">
-              Event Name
-            </label>
-            <input
-              type="text"
-              id="eventName"
-              name="eventName"
-              value={formData.eventName}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label htmlFor="date" className="block text-lg font-medium">
-              Date
-            </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              required
-              min={new Date(new Date().setDate(new Date().getDate() + 1))
-                .toISOString()
-                .split("T")[0]} // Sets min to tomorrow's date
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label htmlFor="time" className="block text-lg font-medium">
-              Time
-            </label>
-            <input
-              type="time"
-              id="start"
-              name="start"
-              value={formData.start}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label htmlFor="buildingName" className="block text-lg font-medium">
-              Building Name
-            </label>
-            <input
-              type="text"
-              id="buildingName"
-              name="buildingName"
-              value={formData.buildingName}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label htmlFor="roomNumber" className="block text-lg font-medium">
-              Room Number
-            </label>
-            <input
-              type="text"
-              id="roomNumber"
-              name="roomNumber"
-              value={formData.roomNumber}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label htmlFor="details" className="block text-lg font-medium">
-              Event Details
-            </label>
-            <textarea
-              id="details"
-              name="details"
-              value={formData.details}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Update
-          </button>
-        </form>
-      </div>
-      <Footer />
-    </>
+    <div className="container mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-4">Update Event</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="eventName" className="block text-lg font-medium">
+            Event Name
+          </label>
+          <input
+            type="text"
+            id="eventName"
+            name="eventName"
+            value={formData.eventName}
+            onChange={handleInputChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="date" className="block text-lg font-medium">
+            Date
+          </label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            value={formData.date}
+            onChange={handleInputChange}
+            required
+            min={new Date(new Date().setDate(new Date().getDate() + 1))
+              .toISOString()
+              .split("T")[0]} // Sets min to tomorrow's date
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="time" className="block text-lg font-medium">
+            Time
+          </label>
+          <input
+            type="time"
+            id="start"
+            name="start"
+            value={formData.start}
+            onChange={handleInputChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="buildingName" className="block text-lg font-medium">
+            Building Name
+          </label>
+          <input
+            type="text"
+            id="buildingName"
+            name="buildingName"
+            value={formData.buildingName}
+            onChange={handleInputChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="roomNumber" className="block text-lg font-medium">
+            Room Number
+          </label>
+          <input
+            type="text"
+            id="roomNumber"
+            name="roomNumber"
+            value={formData.roomNumber}
+            onChange={handleInputChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="details" className="block text-lg font-medium">
+            Event Details
+          </label>
+          <textarea
+            id="details"
+            name="details"
+            value={formData.details}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        >
+          Update
+        </button>
+      </form>
+    </div>
   );
 }
+
+export default function UpdateEvent() {
+  return (
+    <>
+      <Header />
+      <Suspense fallback={<p>Loading...</p>}>
+        <UpdateEventForm />
+      </Suspense>
+      <Footer />
+    </>
 
