@@ -3,7 +3,7 @@
 import React, { useEffect, useState, Suspense } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useAuth } from "@/context/AuthContext"; // Adjust path as needed
+import { useAuth } from "@/context/AuthContext";
 import { db } from "@/config/firebase.config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,8 +21,8 @@ function UpdateEventForm() {
     roomNumber: "",
   });
   const router = useRouter();
-  const searchParams = useSearchParams(); // Get search parameters
-  const eventId = searchParams.get("eventId"); // Extract eventId from URL
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get("eventId");
 
   if (!eventId) {
     return (
@@ -40,15 +40,7 @@ function UpdateEventForm() {
         const eventSnapshot = await getDoc(eventRef);
 
         if (eventSnapshot.exists()) {
-          const eventData = eventSnapshot.data() as {
-            eventName: string;
-            date: string;
-            start: string;
-            details: string;
-            buildingName: string;
-            roomNumber: string;
-          };
-
+          const eventData = eventSnapshot.data();
           setFormData(eventData);
         } else {
           console.error("Event does not exist");
@@ -78,15 +70,14 @@ function UpdateEventForm() {
     }
 
     try {
-      const eventRef = doc(db, "events", eventId); // Ensure doc() arguments are correct
+      const eventRef = doc(db, "events", eventId);
       await updateDoc(eventRef, {
         ...formData,
         isApproved: false,
-        updatedAt: new Date(), // Track when the event was updated
+        updatedAt: new Date(),
       });
 
-      console.log("Event updated:", formData);
-      router.push("/calendar"); // Redirect to calendar or any other page
+      router.push("/calendar");
     } catch (error) {
       console.error("Error updating event:", error);
     }
@@ -96,6 +87,7 @@ function UpdateEventForm() {
     <div className="container mx-auto p-8">
       <h1 className="text-3xl font-bold mb-4">Update Event</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form fields */}
         <div>
           <label htmlFor="eventName" className="block text-lg font-medium">
             Event Name
@@ -107,77 +99,6 @@ function UpdateEventForm() {
             value={formData.eventName}
             onChange={handleInputChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label htmlFor="date" className="block text-lg font-medium">
-            Date
-          </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            required
-            min={new Date(new Date().setDate(new Date().getDate() + 1))
-              .toISOString()
-              .split("T")[0]} // Sets min to tomorrow's date
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label htmlFor="time" className="block text-lg font-medium">
-            Time
-          </label>
-          <input
-            type="time"
-            id="start"
-            name="start"
-            value={formData.start}
-            onChange={handleInputChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label htmlFor="buildingName" className="block text-lg font-medium">
-            Building Name
-          </label>
-          <input
-            type="text"
-            id="buildingName"
-            name="buildingName"
-            value={formData.buildingName}
-            onChange={handleInputChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label htmlFor="roomNumber" className="block text-lg font-medium">
-            Room Number
-          </label>
-          <input
-            type="text"
-            id="roomNumber"
-            name="roomNumber"
-            value={formData.roomNumber}
-            onChange={handleInputChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label htmlFor="details" className="block text-lg font-medium">
-            Event Details
-          </label>
-          <textarea
-            id="details"
-            name="details"
-            value={formData.details}
-            onChange={handleInputChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
@@ -201,4 +122,5 @@ export default function UpdateEvent() {
       </Suspense>
       <Footer />
     </>
-
+  );
+}
